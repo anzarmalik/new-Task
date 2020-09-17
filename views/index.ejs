@@ -1,0 +1,524 @@
+<link rel="stylesheet" type="text/css" href="../assets/css/datatables.min.css" />
+<script src="../assets/js/jquery.min.js"></script>
+<script type="text/javascript" src="../assets/js/jquery.dataTables.min.js"></script>
+<link href="../assets/css/buttons.dataTables.min.css" rel="stylesheet" type="text/css" />
+
+<!-- Latest compiled and minified CSS  Bootstrap CDN -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+<!-- toastr -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css">
+
+<!-- parsley validation -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/parsley.js/2.9.2/parsley.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js"></script>
+
+<!-- icon -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<!-- pdf generator -->
+<script src="https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js"
+  integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+<style>
+  .border {
+    border: 1px solid #e5e5e5;
+  }
+</style>
+<div class="card">
+  <div class="card-header">User Details
+
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-xs-12 col-sm-3 col-md-12">
+        <div class="col-md-3" style="float: right;">
+          <button type="button" class="btn btn-primary" style="float: right;" data-toggle="modal"
+            data-target="#myModal">
+            Add User
+          </button>
+        </div>
+      </div>
+    </div>
+    <br>
+    <br>
+    <br>
+
+    <div class="row">
+      <div class="table-responsive">
+        <table id="updateTable" class="table table-striped table-bordered table-nowrap dt-responsive dataTable"
+          cellspacing="0" width="100%">
+          <thead>
+            <tr>
+              <th>UPDATE</th>
+              <th>FIRST NAME</th>
+              <th>LAST NAME</th>
+              <th>EMAIL ADDRESS</th>
+              <th>DOB</th>
+              <th>ADDRESS</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><img src="../images/loading.gif"></td>
+              <td><img src="../images/loading.gif"></td>
+              <td><img src="../images/loading.gif"></td>
+              <td><img src="../images/loading.gif"></td>
+              <td><img src="../images/loading.gif"></td>
+              <td><img src="../images/loading.gif"></td>
+              <td><img src="../images/loading.gif"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <!-- <div class="card-footer">Yarikul Assesment</div> -->
+</div>
+
+
+<div class="modal in" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Add User</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body form">
+        <form action="#" id="userForm" class="horizontal-form" style="padding: 4px;" autocomplete="off">
+          <div class="form-body">
+
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label class="control-label"> First Name </label>
+                  <input type="text" id="firstName" class="form-control" required data-parsley-trigger="change"
+                    data-parsley-minlength="4" data-parsley-maxlength="15" data-parsley-pattern="^[a-zA-Z]*$"
+                    data-parsley-pattern-message="This should contain only characters. No special characters are allowed."
+                    data-parsley-errors-container="#firstNameError" data-parsley-required-message='Enter First Name'>
+                  <p class="help-block" id="firstNameError"></p>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label class="control-label"> Last Name </label>
+                  <input type="text" id="lastName" class="form-control" required data-parsley-trigger="change"
+                    data-parsley-minlength="5" data-parsley-maxlength="15" data-parsley-pattern="^[a-zA-z]*$" data
+                    data-parsley-pattern-message="This should contain only characters. No special characters are allowed."
+                    data-parsley-errors-container="#lastNameError" data-parsley-required-message='Enter Last Name'>
+                  <p class="help-block" id="lastNameError"></p>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label class="control-label">Address</label>
+                  <input type="text" id="address" class="form-control" required data-parsley-trigger="change"
+                    data-parsley-minlength="10" data-parsley-maxlength="50" data-parsley-pattern="^[A-Za-z 0-9 , ]*$"
+                    data-parsley-pattern-message="No special characters are allowed."
+                    data-parsley-errors-container="#addressError" data-parsley-required-message='Enter Address'>
+                  <p class="help-block" id="addressError"></p>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label class="control-label">Email Address</label>
+                  <input type="text" id="emailAddress" class="form-control" required data-parsley-trigger="change"
+                    data-parsley-minlength="10" data-parsley-maxlength="50" data-parsley-pattern="^[A-Za-z 0-9 \-@. ]*$"
+                    data-parsley-pattern-message="only email characters are allowed."
+                    data-parsley-errors-container="#emailAddressError" data-parsley-required-message='Enter email'>
+                  <p class="help-block" id="emailAddressError"></p>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label class="control-label">Date Of birth</label>
+                  <input type="text" id="dob" class="form-control" required data-parsley-trigger="change"
+                    data-parsley-minlength="1" data-parsley-maxlength="10" data-parsley-pattern="^[0-9 -]*$"
+                    data-parsley-pattern-message="This should contain only numbers. No special characters are allowed."
+                    data-parsley-errors-container="#dobError" data-parsley-required-message='Enter DOB'>
+                  <p class="help-block" id="dobError"></p>
+                </div>
+              </div>
+            </div>
+
+            <div class="modal-footer">
+              <div class="row">
+                <button class="btn btn-primary" type="submit" id="btnNewUser" name="btnNewUser">
+                  Add User
+                </button>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <button class="btn btn-danger" data-dismiss="modal" style="margin-right: 10px;" type="submit"
+                  id="close">Close</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+<div class="modal" id="updateModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Update User</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body form" id="dataView">
+        <form action="#" id="userFormUpdate" class="horizontal-form" style="padding: 4px;" autocomplete="off">
+          <div class="form-body">
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label class="control-label"> First Name </label>
+                  <input type="text" id="firstNameView" class="form-control" required data-parsley-trigger="change"
+                    data-parsley-minlength="4" data-parsley-maxlength="15" data-parsley-pattern="^[a-zA-Z]*$"
+                    data-parsley-pattern-message="This should contain only characters. No special characters are allowed."
+                    data-parsley-errors-container="#firstNameViewError"
+                    data-parsley-required-message='Enter First Name'>
+                  <p class="help-block" id="firstNameViewError"></p>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label class="control-label"> Last Name </label>
+                  <input type="text" id="lastNameView" class="form-control" required data-parsley-trigger="change"
+                    data-parsley-minlength="5" data-parsley-maxlength="15" data-parsley-pattern="^[a-zA-z]*$" data
+                    data-parsley-pattern-message="This should contain only characters. No special characters are allowed."
+                    data-parsley-errors-container="#lastNameViewError" data-parsley-required-message='Enter Last Name'>
+                  <p class="help-block" id="lastNameViewError"></p>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label class="control-label">Address</label>
+                  <input type="text" id="addressView" class="form-control" required data-parsley-trigger="change"
+                    data-parsley-minlength="10" data-parsley-maxlength="50" data-parsley-pattern="^[A-Za-z 0-9 , ]*$"
+                    data-parsley-pattern-message="No special characters are allowed."
+                    data-parsley-errors-container="#addressViewError" data-parsley-required-message='Enter Address'>
+                  <p class="help-block" id="addressViewError"></p>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label class="control-label">Email Address</label>
+                  <input type="text" id="emailAddressView" class="form-control" required data-parsley-trigger="change"
+                    data-parsley-minlength="10" data-parsley-maxlength="50" data-parsley-pattern="^[A-Za-z 0-9 \-@. ]*$"
+                    data-parsley-pattern-message="only email characters are allowed."
+                    data-parsley-errors-container="#emailAddressViewError" data-parsley-required-message='Enter email'>
+                  <p class="help-block" id="emailAddressViewError"></p>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label class="control-label">Date Of birth</label>
+                  <input type="text" id="dobView" class="form-control" required data-parsley-trigger="change"
+                    data-parsley-minlength="1" data-parsley-maxlength="10" data-parsley-pattern="^[0-9 -]*$"
+                    data-parsley-pattern-message="This should contain only numbers. No special characters are allowed."
+                    data-parsley-errors-container="#dobViewError" data-parsley-required-message='Enter DOB'>
+                  <p class="help-block" id="dobViewError"></p>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="modal-footer">
+              <div class="row">
+                <button class="btn btn-primary" type="submit" id="btnUpdate" name="btnUpdate">
+                  Update User
+                </button>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <button class="btn btn-danger" data-dismiss="modal" style="margin-right: 10px;" type="submit"
+                  id="close">Close</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<script>
+  $(document).ready(function () {
+
+    //initialize parsley
+    $("#userForm").parsley()
+    $("#userFormUpdate").parsley()
+    let userData, selectedId, selectedData, userDetails;
+
+    let updateTable = $('#updateTable').DataTable({
+      'order': ['1', 'DESC'],
+      'processing': true,
+      'serverSide': true,
+      "paging": true,
+      "bSort": false,
+      dom: 'Bfrtip',
+      language: {
+        buttons: {
+          colvis: '<span class="icon icon-eye"/>'
+        }
+      },
+      'ajax': {
+        'url': "/getAllDetails",
+        'type': 'GET',
+        dataFilter: function (data) {
+          json = jQuery.parseJSON(data)
+          userData = json.data
+
+          console.log("==========================")
+          console.log(userData)
+          console.log("==========================")
+
+          for (i = 0; i < userData.length; i++) {
+
+          }
+          return JSON.stringify(json)
+        }
+      },
+      'columns': [{
+        sortable: false,
+        "render": function (data, type, full) {
+          var buttonID = "edit_" + full.id;
+          return '<a style="cursor:pointer;" id=' + buttonID + ' class="fa fa-eye update"></a>';
+        }
+      },
+      {
+        'data': 'firstname'
+      },
+      {
+        'data': 'lastname'
+      },
+      {
+        'data': 'emailAddress'
+      },
+      {
+        'data': 'dob'
+      },
+      {
+        'data': 'address'
+      },
+      {
+        sortable: false,
+        "render": function (data, type, full) {
+          var id = "delete_" + full.id;
+          return '<a id=' + id +
+            ' class="fa fa-eye delete" + style="cursor: pointer"></a>';
+        }
+      },
+      ]
+    });
+
+
+    $("#btnNewUser").click(function () {
+      if ($('#userForm').parsley().validate()) {
+        $("#btnNewUser").text("Adding...").prop('disabled', true)
+        userDetails = {
+          firstname: $("#firstName").val(),
+          lastname: $("#lastName").val(),
+          address: $("#address").val(),
+          dob: $('#dob').val(),
+          emailAddress: $('#emailAddress').val()
+        }
+        axios.post("/", userDetails).then(function (response) {
+          console.log("===============response====userDetails=======", response);
+          $("#btnNewUser").text("Add User").prop('disabled', false)
+          if (response.data.resCode == 200) {
+            $("#myModal").modal('toggle')
+            updateTable.draw(true)
+            toastr['success'](response.data.resMessage)
+            resetForm()
+          }
+          else {
+            toastr['error']("Something Went Wrong!")
+            $("#myModal").modal('show')
+          }
+        }).catch(function (err) {
+          console.log(err);
+          $("#btnNewUser").text("Add User").prop('disabled', false)
+          toastr['error']("Something Went Wrong!")
+        })
+      }
+    })
+
+
+
+
+
+
+
+
+    $('#updateTable').on('click', 'a.update', function (row) {
+      console.log("=====================")
+      let chkId = this.id;
+      //$("#" + chkId).prop('disabled', true);
+      let rowId = row.target.id
+      selectedId = rowId.split('_')[1]
+      console.log('selectedId===', selectedId);
+      $("#updateModal").modal('show')
+      for (var i = 0; i < userData.length; i++) {
+        if (userData[i].id == selectedId) {
+          selectedData = userData[i];
+          break;
+        }
+      }
+
+      console.log("===========selectedData========", selectedData);
+      $("#firstNameView").val(selectedData.firstname)
+      $("#lastNameView").val(selectedData.lastname)
+      $("#addressView").val(selectedData.address)
+      $('#dobView').val(selectedData.dob)
+      $('#emailAddressView').val(selectedData.emailAddress)
+
+
+
+    });
+
+
+
+    $('#updateTable').on('click', 'a.delete', function (row) {
+      var rowId = row.target.id
+      selectedId = rowId.split('_')[1]
+
+      for (var i = 0; i < userData.length; i++) {
+        if (userData[i].Id == selectedId) {
+          selectedData = userData[i];
+          break;
+        }
+      }
+
+
+      let id = selectedId;
+      swal({
+        title: "Are you sure ??",
+        text: "Delete User",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      }).then((willDelete) => {
+        axios.delete('/?id=' + id).then(
+          function (response) {
+            console.log("===============response===========", response);
+            if (response.data.resCode == 200) {
+              toastr['success'](response.data.resMessage)
+              resetForm()
+            } else {
+              toastr['error']("Something went wrong")
+              resetForm()
+            }
+          }).catch(function (err) {
+            toastr['error']("Something Went Wrong!")
+          })
+      })
+
+    })
+
+
+
+
+
+
+
+
+
+
+
+    $("#btnUpdate").click(function (e) {
+      e.preventDefault()
+      if ($('#userFormUpdate').parsley().validate()) {
+        let details = {
+          firstname: $("#firstNameView").val(),
+          lastname: $("#lastNameView").val(),
+          emailAddress: $("#emailAddressView").val(),
+          address: $("#addressView").val(),
+          dob: $("#dobView").val(),
+          id: selectedData.id
+        }
+        console.log(details);
+        axios.put("/", details).then(function (response) {
+          console.log("===============response===========", response);
+          if (response.data.resCode == 200) {
+            $("#updateModal").modal('toggle')
+            toastr['success'](response.data.resMessage)
+            resetForm()
+          } else {
+            toastr['error']("Something went wrong")
+            resetForm()
+          }
+        }).catch(function (err) {
+          toastr['error']("Something Went Wrong!")
+        })
+      }
+    })
+
+
+    $("#myModal").on('hide.bs.modal', function () {
+      resetForm();
+    });
+
+    $("#updateModal").on('hide.bs.modal', function () {
+      resetForm();
+    });
+
+
+    function resetForm() {
+      document.getElementById("userForm").reset();
+      document.getElementById("userFormUpdate").reset();
+      $('#userForm').parsley().reset();
+      $('#userFormUpdate').parsley().reset();
+    }
+
+
+  })
+</script>
